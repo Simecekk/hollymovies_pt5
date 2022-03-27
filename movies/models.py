@@ -17,3 +17,9 @@ class Movie(models.Model):
         MinValueValidator(0), MaxValueValidator(100)
     ])
     language = models.CharField(choices=LANGUAGE_CHOICES, max_length=5)
+
+    # class Meta:
+    #     verbose_name_plural = 'Movies'
+
+    def __str__(self):
+        return f'{self.name} : {self.id}'
