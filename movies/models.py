@@ -22,5 +22,8 @@ class Movie(models.Model):
     # class Meta:
     #     verbose_name_plural = 'Movies'
 
+
+    # TODO Ahoj 
+
     def __str__(self):
         return f'{self.name} : {self.id}'
