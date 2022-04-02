@@ -1,0 +1,7 @@
+{% include "base.html" %}
+
+{% block body %}
+    {% for actor in all_actors %}
+        <p>{{ actor.name }} age: {{ actor.age }}</p>
+    {% endfor %}
+{% endblock body %}

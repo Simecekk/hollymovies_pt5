@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body style="background: aqua">
-<h1>Welcome in hollymovies app</h1><br>
+{% include "base.html" %}
+
+{% block body %}
+
+    <h4>All movies ({{ all_movies.count }})</h4>
+    {% for movie in all_movies %}
+        <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
+    {% endfor %}<br>
 
 
-<h4>All movies ({{ all_movies.count }})</h4>
-{% for movie in all_movies %}
-    <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
-{% endfor %}<br>
+    <h4>Best movies ({{ best_movies.count }})</h4>
+    {% for movie in best_movies %}
+        <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
+    {% endfor %}<br>
 
+    <h4>Worst movies ({{ worst_movies.count }})</h4>
+    {% for movie in worst_movies %}
+        <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
+    {% endfor %}
 
-<h4>Best movies ({{ best_movies.count }})</h4>
-{% for movie in best_movies %}
-    <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
-{% endfor %}<br>
-
-<h4>Worst movies ({{ worst_movies.count }})</h4>
-{% for movie in worst_movies %}
-    <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
-{% endfor %}
-
-</body>
-</html>
+{% endblock body %}
