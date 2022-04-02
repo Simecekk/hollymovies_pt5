@@ -2,6 +2,21 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+class Actor(models.Model):
+    GENDER_MALE = 'male'
+    GENDER_FEMALE = 'female'
+
+    GENDER_CHOICES = (
+        (GENDER_MALE, 'male'),
+        (GENDER_FEMALE, 'female')
+    )
+
+    name = models.CharField(max_length=256)
+    age = models.IntegerField()
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=100)
+    born_at = models.DateField()
+
+
 class Movie(models.Model):
     LANGUAGE_ENG = 'eng'
     LANGUAGE_CZ = 'cz'
@@ -18,6 +33,7 @@ class Movie(models.Model):
     ])
     language = models.CharField(choices=LANGUAGE_CHOICES, max_length=5)
     released = models.DateField()
+    actors = models.ManyToManyField('Actor', related_name='movies')
 
     # class Meta:
     #     verbose_name_plural = 'Movies'
