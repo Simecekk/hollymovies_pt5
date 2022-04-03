@@ -1,23 +1,46 @@
+from django.http import HttpResponse
 from django.template.response import TemplateResponse
+from django.views.generic import ListView
+
 from movies.models import Movie, Actor
+from django.views import View
 
 
-def homepage_view(request):
-    context = {
-        'number_of_movies': Movie.objects.all().count(),
-        'number_of_actors': Actor.objects.all().count(),
-        'page_name': 'Homepage'
-    }
-    return TemplateResponse(request, 'homepage.html', context=context)
+class HomepageView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'number_of_movies': Movie.objects.all().count(),
+            'number_of_actors': Actor.objects.all().count(),
+            'page_name': 'Homepage'
+        }
+        return TemplateResponse(request, 'homepage.html', context=context)
 
 
-def actors_view(request):
-    actors = Actor.objects.all()
-    context = {
-        'all_actors': actors,
-        'page_name': 'Actors',
-    }
-    return TemplateResponse(request, 'actors.html', context=context)
+# def homepage_view(request):
+#     if request.method == 'GET':
+#         context = {
+#             'number_of_movies': Movie.objects.all().count(),
+#             'number_of_actors': Actor.objects.all().count(),
+#             'page_name': 'Homepage'
+#         }
+#         return TemplateResponse(request, 'homepage.html', context=context)
+#     elif request.method == 'POST':
+#         return HttpResponse(request, 'method not allowed')
+
+
+class ActorListView(ListView):
+    model = Actor
+    template_name = 'actors.html'
+    extra_context = {'page_name': 'Actors'}
+
+
+# def actors_view(request):
+#     actors = Actor.objects.all()
+#     context = {
+#         'all_actors': actors,
+#         'page_name': 'Actors',
+#     }
+#     return TemplateResponse(request, 'actors.html', context=context)
 
 
 def movies_view(request):
@@ -31,3 +54,18 @@ def movies_view(request):
         'page_name': 'Movies',
     }
     return TemplateResponse(request, 'movies.html', context=context)
+
+
+def jinja2_testing_view(request):
+    index_list = ['index_1', 'index_2', 'index_3']
+    index_1 = index_list[0]
+
+    testing_dict = {'key_1': 'value_1', 'key_2': 'value_2'}
+    value_1 = testing_dict['key_1']
+
+    context = {
+        'testing_list': index_list,
+        'testing_dict': testing_dict,
+        'testing_queryset': Movie.objects.all(),
+    }
+    return TemplateResponse(request, 'jinja2_testing.html', context=context)

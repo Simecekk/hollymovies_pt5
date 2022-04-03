@@ -1,8 +1,9 @@
 from django.urls import path
-from movies.views import homepage_view, actors_view, movies_view
+from movies.views import HomepageView, ActorListView, movies_view, jinja2_testing_view
 
 urlpatterns = [
-    path('', homepage_view, name='homepage'),
-    path('actors/', actors_view, name='actors'),
-    path('movies/', movies_view, name='movies')
+    path('', HomepageView.as_view(), name='homepage'),
+    path('actors/', ActorListView.as_view(), name='actors'),
+    path('movies/', movies_view, name='movies'),
+    path('testing/', jinja2_testing_view, name='jinja2_testing_view')
 ]

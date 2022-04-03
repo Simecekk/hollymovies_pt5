@@ -1,7 +1,7 @@
 {% include "base.html" %}
 
 {% block body %}
-    {% for actor in all_actors %}
+    {% for actor in object_list %}
         <p>{{ actor.name }} age: {{ actor.age }}</p>
     {% endfor %}
 {% endblock body %}

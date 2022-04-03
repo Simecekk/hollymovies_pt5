@@ -7,9 +7,12 @@
 <body style="background: #fffad3">
 <h1>Welcome in hollymovies app - {{ page_name }}</h1><br>
 
-<a href="{% url 'homepage' %}">Homepage</a><br><br>
-<a href="{% url 'actors' %}">Actors</a><br>
-<a href="{% url 'movies' %}">Movies</a>
+{% block navbar %}
+    <a href="{% url 'homepage' %}">Homepage</a><br><br>
+    <a href="{% url 'actors' %}">Actors</a><br>
+    <a href="{% url 'movies' %}">Movies</a><br>
+    <a href="{% url 'jinja2_testing_view' %}">Template cheatsheet</a>
+{% endblock navbar %}
 
 {% block body %}
 {% endblock body %}
