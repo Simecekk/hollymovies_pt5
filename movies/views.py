@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from movies.models import Movie, Actor
 from django.views import View
@@ -51,6 +51,16 @@ class MovieListView(ListView):
         'worst_movies': Movie.objects.filter(rating__lte=20).order_by('rating'),
         'page_name': 'Movies',
     }
+
+
+class MovieDetailView(DetailView):
+    model = Movie
+    template_name = 'movie_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MovieDetailView, self).get_context_data(**kwargs)
+        context.update({'page_name': self.object.name})
+        return context
 
 
 # def movies_view(request):
