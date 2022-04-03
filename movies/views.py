@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from movies.models import Movie, Actor
 from django.views import View
@@ -34,6 +34,17 @@ class ActorListView(ListView):
     extra_context = {'page_name': 'Actors'}
 
 
+class HollyMoviesDetailView(DetailView):
+    def get_context_data(self, **kwargs):
+        context = super(HollyMoviesDetailView, self).get_context_data(**kwargs)
+        context.update({'page_name': self.object.name})
+        return context
+
+
+class ActorDetailView(HollyMoviesDetailView):
+    model = Actor
+    template_name = 'actor_detail.html'
+
 # def actors_view(request):
 #     actors = Actor.objects.all()
 #     context = {
@@ -53,14 +64,9 @@ class MovieListView(ListView):
     }
 
 
-class MovieDetailView(DetailView):
+class MovieDetailView(HollyMoviesDetailView):
     model = Movie
     template_name = 'movie_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(MovieDetailView, self).get_context_data(**kwargs)
-        context.update({'page_name': self.object.name})
-        return context
 
 
 # def movies_view(request):
@@ -76,16 +82,24 @@ class MovieDetailView(DetailView):
 #     return TemplateResponse(request, 'movies.html', context=context)
 
 
-def jinja2_testing_view(request):
-    index_list = ['index_1', 'index_2', 'index_3']
-    index_1 = index_list[0]
-
-    testing_dict = {'key_1': 'value_1', 'key_2': 'value_2'}
-    value_1 = testing_dict['key_1']
-
-    context = {
-        'testing_list': index_list,
-        'testing_dict': testing_dict,
+class Jinja2TestingView(TemplateView):
+    template_name = 'jinja2_testing.html'
+    extra_context = {
+        'testing_list': ['index_1', 'index_2', 'index_3'],
+        'testing_dict': {'key_1': 'value_1', 'key_2': 'value_2'},
         'testing_queryset': Movie.objects.all(),
     }
-    return TemplateResponse(request, 'jinja2_testing.html', context=context)
+
+# def jinja2_testing_view(request):
+#     index_list = ['index_1', 'index_2', 'index_3']
+#     index_1 = index_list[0]
+#
+#     testing_dict = {'key_1': 'value_1', 'key_2': 'value_2'}
+#     value_1 = testing_dict['key_1']
+#
+#     context = {
+    # #         'testing_list': index_list,
+    # #         'testing_dict': testing_dict,
+    # #         'testing_queryset': Movie.objects.all(),
+    # #     }
+#     return TemplateResponse(request, 'jinja2_testing.html', context=context)
