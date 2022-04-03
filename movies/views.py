@@ -43,17 +43,27 @@ class ActorListView(ListView):
 #     return TemplateResponse(request, 'actors.html', context=context)
 
 
-def movies_view(request):
-    all_movies = Movie.objects.all().order_by('-rating')  # SELECT * FROM movies_movie;
-    best_movies = Movie.objects.filter(rating__gte=80).order_by('-rating')  # SELECT * FROM movies_movie WHERE rating GTE 80;
-    worst_movies = Movie.objects.filter(rating__lte=20).order_by('rating')
-    context = {
-        'all_movies': all_movies,
-        'best_movies': best_movies,
-        'worst_movies': worst_movies,
+class MovieListView(ListView):
+    queryset = Movie.objects.all().order_by('-rating')
+    template_name = 'movies.html'
+    extra_context = {
+        'best_movies': Movie.objects.filter(rating__gte=80).order_by('-rating'),
+        'worst_movies': Movie.objects.filter(rating__lte=20).order_by('rating'),
         'page_name': 'Movies',
     }
-    return TemplateResponse(request, 'movies.html', context=context)
+
+
+# def movies_view(request):
+#     all_movies = Movie.objects.all().order_by('-rating')  # SELECT * FROM movies_movie;
+#     best_movies = Movie.objects.filter(rating__gte=80).order_by('-rating')  # SELECT * FROM movies_movie WHERE rating GTE 80;
+#     worst_movies = Movie.objects.filter(rating__lte=20).order_by('rating')
+#     context = {
+#         'all_movies': all_movies,
+#         'best_movies': best_movies,
+#         'worst_movies': worst_movies,
+#         'page_name': 'Movies',
+#     }
+#     return TemplateResponse(request, 'movies.html', context=context)
 
 
 def jinja2_testing_view(request):

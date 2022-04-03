@@ -1,8 +1,8 @@
 {% include "base.html" %}
 
 {% block body %}
-    <h4>All movies ({{ all_movies.count }})</h4>
-    {% for movie in all_movies %}
+    <h4>All movies ({{ object_list.count }})</h4>
+    {% for movie in object_list %}
         <p>{{ movie.name }} - rating ({{ movie.rating }})</p>
     {% endfor %}<br>
 
