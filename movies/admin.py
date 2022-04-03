@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from movies.models import Movie, Actor
+from movies.models import Movie, Actor, Director
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -8,10 +8,19 @@ class MovieAdmin(admin.ModelAdmin):
     list_filter = ('language', )
 
 
-class ActorAdmin(admin.ModelAdmin):
+class BasePersonAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'age', 'gender')
     list_filter = ('gender', )
 
 
+class ActorAdmin(BasePersonAdmin):
+    pass
+
+
+class DirectorAdmin(BasePersonAdmin):
+    pass
+
+
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Actor, ActorAdmin)
+admin.site.register(Director, DirectorAdmin)
