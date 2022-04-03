@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.views.generic import ListView, DetailView, TemplateView
 
-from movies.models import Movie, Actor
+from movies.models import Movie, Actor, Director
 from django.views import View
 
 
@@ -11,6 +11,7 @@ class HomepageView(View):
         context = {
             'number_of_movies': Movie.objects.all().count(),
             'number_of_actors': Actor.objects.all().count(),
+            'number_of_directors': Director.objects.all().count(),
             'page_name': 'Homepage'
         }
         return TemplateResponse(request, 'homepage.html', context=context)
@@ -52,6 +53,17 @@ class ActorDetailView(HollyMoviesDetailView):
 #         'page_name': 'Actors',
 #     }
 #     return TemplateResponse(request, 'actors.html', context=context)
+
+
+class DirectorListView(ListView):
+    model = Director
+    template_name = 'directors.html'
+    extra_context = {'page_name': 'Directors'}
+
+
+class DirectorDetailView(HollyMoviesDetailView):
+    model = Director
+    template_name = 'actor_detail.html'
 
 
 class MovieListView(ListView):
