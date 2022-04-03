@@ -98,8 +98,8 @@ class Jinja2TestingView(TemplateView):
 #     value_1 = testing_dict['key_1']
 #
 #     context = {
-    # #         'testing_list': index_list,
-    # #         'testing_dict': testing_dict,
-    # #         'testing_queryset': Movie.objects.all(),
-    # #     }
+#             'testing_list': index_list,
+#             'testing_dict': testing_dict,
+#             'testing_queryset': Movie.objects.all(),
+#     }
 #     return TemplateResponse(request, 'jinja2_testing.html', context=context)
