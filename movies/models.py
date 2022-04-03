@@ -16,6 +16,9 @@ class Actor(models.Model):
     gender = models.CharField(choices=GENDER_CHOICES, max_length=100)
     born_at = models.DateField()
 
+    def __str__(self):
+        return self.name
+
 
 class Movie(models.Model):
     LANGUAGE_ENG = 'eng'

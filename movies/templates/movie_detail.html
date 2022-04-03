@@ -5,9 +5,9 @@
     Description: {{ object.description }}<br>
     Rating: {{ object.rating }}<br>
     Language: {{ object.get_language_display }}<br>
-    Released: {{ object.released|date:"d.m Y"}}<br>
-    Actors:<br>
+    Released: {{ object.released|date:"d.m Y"}}<br><br>
+    Actors:<br><br>
     {% for actor in object.actors.all %}
-        {{ actor.name }}
+        {{ actor.name }}<br>
     {% endfor %}
 {% endblock body %}
