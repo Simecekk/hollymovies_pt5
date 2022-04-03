@@ -54,6 +54,7 @@ class Movie(models.Model):
         related_name='movies',
         null=True, blank=True,
     )
+    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.name} : {self.id}'

@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.generic import ListView, DetailView, TemplateView
 
@@ -79,6 +80,12 @@ class MovieListView(ListView):
 class MovieDetailView(HollyMoviesDetailView):
     model = Movie
     template_name = 'movie_detail.html'
+
+    def post(self, request, pk, *args, **kwargs):
+        movie = self.get_object()
+        movie.likes += 1
+        movie.save(update_fields=['likes', ])
+        return redirect('movie_detail', pk=pk)
 
 
 # def movies_view(request):
