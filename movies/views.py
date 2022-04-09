@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, FormView
 
 from movies.forms import ContactForm
 from movies.models import Movie, Actor, Director, Contact
@@ -125,23 +125,44 @@ class Jinja2TestingView(TemplateView):
 #     return TemplateResponse(request, 'jinja2_testing.html', context=context)
 
 
-class ContactView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'contact_form': ContactForm()
-        }
-        return TemplateResponse(request, 'contact.html', context=context)
+# class ContactView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'contact_form': ContactForm()
+#         }
+#         return TemplateResponse(request, 'contact.html', context=context)
+#
+#     def post(self, request, *args, **kwargs):
+#         bounded_form = ContactForm(request.POST)
+#         if not bounded_form.is_valid():
+#             return TemplateResponse(request, 'contact.html', context={'contact_form': bounded_form})
+#
+#         name = bounded_form.cleaned_data.get('name')
+#         phone_number = bounded_form.cleaned_data.get('phone_number')
+#         email = bounded_form.cleaned_data.get('email')
+#         subject = bounded_form.cleaned_data.get('subject')
+#         contact_at = bounded_form.cleaned_data.get('contact_at')
+#
+#         Contact.objects.create(
+#             name=name,
+#             phone_number=phone_number,
+#             email=email,
+#             subject=subject,
+#             contact_at=contact_at
+#         )
+#
+#         return TemplateResponse(request, 'contact.html', context={'contact_form': ContactForm()})
 
-    def post(self, request, *args, **kwargs):
-        bounded_form = ContactForm(request.POST)
-        if not bounded_form.is_valid():
-            return TemplateResponse(request, 'contact.html', context={'contact_form': bounded_form})
+class ContactView(FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
 
-        name = bounded_form.cleaned_data.get('name')
-        phone_number = bounded_form.cleaned_data.get('phone_number')
-        email = bounded_form.cleaned_data.get('email')
-        subject = bounded_form.cleaned_data.get('subject')
-        contact_at = bounded_form.cleaned_data.get('contact_at')
+    def form_valid(self, form):
+        name = form.cleaned_data.get('name')
+        phone_number = form.cleaned_data.get('phone_number')
+        email = form.cleaned_data.get('email')
+        subject = form.cleaned_data.get('subject')
+        contact_at = form.cleaned_data.get('contact_at')
 
         Contact.objects.create(
             name=name,
@@ -150,5 +171,7 @@ class ContactView(View):
             subject=subject,
             contact_at=contact_at
         )
+        return TemplateResponse(self.request, 'contact.html', context={'form': ContactForm()})
 
-        return TemplateResponse(request, 'contact.html', context={'contact_form': ContactForm()})
+    def form_invalid(self, form):
+        return TemplateResponse(self.request, 'contact.html', context={'form': form})
