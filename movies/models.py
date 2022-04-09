@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.shortcuts import resolve_url
 
 
 class BasePersonModel(models.Model):
@@ -58,6 +59,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return f'{self.name} : {self.id}'
+
+    def get_absolute_url(self):
+        return resolve_url('movie_detail', pk=self.pk)
 
 
 class Contact(models.Model):

@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.views.generic import ListView, DetailView, TemplateView, FormView
+from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView
 
-from movies.forms import ContactForm
+from movies.forms import ContactForm, MovieForm
 from movies.models import Movie, Actor, Director, Contact
 from django.views import View
 
@@ -175,3 +175,9 @@ class ContactView(FormView):
 
     def form_invalid(self, form):
         return TemplateResponse(self.request, 'contact.html', context={'form': form})
+
+
+class CreateMovieView(CreateView):
+    template_name = 'movie_create.html'
+    form_class = MovieForm
+    model = Movie
