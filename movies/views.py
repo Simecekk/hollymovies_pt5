@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView
 
-from movies.forms import ContactForm, MovieForm
+from movies.forms import ContactForm, MovieForm, ActorForm
 from movies.models import Movie, Actor, Director, Contact
 from django.views import View
 
@@ -180,4 +180,10 @@ class ContactView(FormView):
 class CreateMovieView(CreateView):
     template_name = 'movie_create.html'
     form_class = MovieForm
+    model = Movie
+
+
+class CreateActorView(CreateView):
+    template_name = 'actor_create.html'
+    form_class = ActorForm
     model = Movie

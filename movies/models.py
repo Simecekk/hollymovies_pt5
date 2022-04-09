@@ -23,6 +23,9 @@ class BasePersonModel(models.Model):
     class Meta:
         abstract = True
 
+    def get_absolute_url(self):
+        return resolve_url('actor_detail', pk=self.id)
+
 
 class Actor(BasePersonModel):
     pass
@@ -61,7 +64,7 @@ class Movie(models.Model):
         return f'{self.name} : {self.id}'
 
     def get_absolute_url(self):
-        return resolve_url('movie_detail', pk=self.pk)
+        return resolve_url('movie_detail', pk=self.id)
 
 
 class Contact(models.Model):

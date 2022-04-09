@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
 
-from movies.models import Movie
+from movies.models import Movie, Actor
 
 
 class DatePickerDateInput(forms.DateInput):
@@ -45,3 +45,12 @@ class MovieForm(forms.ModelForm):
         model = Movie
         fields = '__all__'
         exclude = ['likes', ]
+
+
+class ActorForm(forms.ModelForm):
+    born_at = forms.DateField(widget=DatePickerDateInput())
+    movies = forms.ModelMultipleChoiceField(queryset=Movie.objects.all())
+
+    class Meta:
+        model = Actor
+        fields = '__all__'
