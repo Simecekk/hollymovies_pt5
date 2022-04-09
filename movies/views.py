@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.views.generic import ListView, DetailView, TemplateView
 
 from movies.forms import ContactForm
-from movies.models import Movie, Actor, Director
+from movies.models import Movie, Actor, Director, Contact
 from django.views import View
 
 
@@ -133,5 +133,22 @@ class ContactView(View):
         return TemplateResponse(request, 'contact.html', context=context)
 
     def post(self, request, *args, **kwargs):
-        print(self)
-        return TemplateResponse(request, 'contact.html', context={'nic': 'nic'})
+        bounded_form = ContactForm(request.POST)
+        if not bounded_form.is_valid():
+            return TemplateResponse(request, 'contact.html', context={'contact_form': bounded_form})
+
+        name = bounded_form.cleaned_data.get('name')
+        phone_number = bounded_form.cleaned_data.get('phone_number')
+        email = bounded_form.cleaned_data.get('email')
+        subject = bounded_form.cleaned_data.get('subject')
+        contact_at = bounded_form.cleaned_data.get('contact_at')
+
+        Contact.objects.create(
+            name=name,
+            phone_number=phone_number,
+            email=email,
+            subject=subject,
+            contact_at=contact_at
+        )
+
+        return TemplateResponse(request, 'contact.html', context={'contact_form': ContactForm()})

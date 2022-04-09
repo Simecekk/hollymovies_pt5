@@ -58,3 +58,11 @@ class Movie(models.Model):
 
     def __str__(self):
         return f'{self.name} : {self.id}'
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=256)
+    email = models.EmailField()
+    subject = models.TextField()
+    phone_number = models.IntegerField()
+    contact_at = models.DateField()
