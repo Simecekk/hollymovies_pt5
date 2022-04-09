@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.generic import ListView, DetailView, TemplateView
 
+from movies.forms import ContactForm
 from movies.models import Movie, Actor, Director
 from django.views import View
 
@@ -122,3 +123,15 @@ class Jinja2TestingView(TemplateView):
 #             'testing_queryset': Movie.objects.all(),
 #     }
 #     return TemplateResponse(request, 'jinja2_testing.html', context=context)
+
+
+class ContactView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'contact_form': ContactForm()
+        }
+        return TemplateResponse(request, 'contact.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        print(self)
+        return TemplateResponse(request, 'contact.html', context={'nic': 'nic'})
