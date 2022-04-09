@@ -186,4 +186,4 @@ class CreateMovieView(CreateView):
 class CreateActorView(CreateView):
     template_name = 'actor_create.html'
     form_class = ActorForm
-    model = Movie
+    model = Actor
