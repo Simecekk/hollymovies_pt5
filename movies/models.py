@@ -23,16 +23,15 @@ class BasePersonModel(models.Model):
     class Meta:
         abstract = True
 
+
+class Actor(BasePersonModel):
     def get_absolute_url(self):
         return resolve_url('actor_detail', pk=self.pk)
 
 
-class Actor(BasePersonModel):
-    pass
-
-
 class Director(BasePersonModel):
-    pass
+    def get_absolute_url(self):
+        return resolve_url('director_detail', pk=self.pk)
 
 
 class Movie(models.Model):
@@ -54,7 +53,7 @@ class Movie(models.Model):
     actors = models.ManyToManyField('Actor', related_name='movies')
     director = models.ForeignKey(
         'Director',
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         related_name='movies',
         null=True, blank=True,
     )

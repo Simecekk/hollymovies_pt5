@@ -6,4 +6,6 @@
         {{ form.as_p }}
         <input type="submit" value="Update actor">
     </form>
+    <br><br>
+    <a href="{% url 'delete_actor' object.id %}">Delete</a>
 {% endblock body %}

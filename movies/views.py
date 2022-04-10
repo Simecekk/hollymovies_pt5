@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
 
-from movies.forms import ContactForm, MovieForm, ActorForm
+from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm
 from movies.models import Movie, Actor, Director, Contact
 from django.views import View
 
@@ -210,3 +210,27 @@ class DeleteMovieView(DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
+
+
+class DeleteActorView(DeleteView):
+    template_name = 'actor_confirm_delete.html'
+    model = Actor
+    success_url = reverse_lazy('actors')
+
+
+class CreateDirectorView(CreateView):
+    template_name = 'director_create.html'
+    form_class = DirectorForm
+    model = Director
+
+
+class UpdateDirectorView(UpdateView):
+    template_name = 'director_update.html'
+    form_class = DirectorForm
+    model = Director
+
+
+class DeleteDirectorView(DeleteView):
+    template_name = 'director_confirm_delete.html'
+    model = Director
+    success_url = reverse_lazy('directors')

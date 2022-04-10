@@ -1,9 +1,10 @@
 from django.urls import path
 from movies.views import HomepageView, ActorListView, MovieListView, MovieDetailView, \
     ActorDetailView, Jinja2TestingView, DirectorListView, DirectorDetailView, ContactView, CreateMovieView, \
-    CreateActorView, UpdateMovieView, UpdateActorView, DeleteMovieView
+    CreateActorView, UpdateMovieView, UpdateActorView, DeleteMovieView, DeleteActorView, CreateDirectorView, \
+    UpdateDirectorView, DeleteDirectorView
 
-urlpatterns = [
+urlpatterns = (
     path('', HomepageView.as_view(), name='homepage'),
     path('actors/', ActorListView.as_view(), name='actors'),
     path('movies/', MovieListView.as_view(), name='movies'),
@@ -18,4 +19,8 @@ urlpatterns = [
     path('movie/update/<int:pk>/', UpdateMovieView.as_view(), name='update_movie'),
     path('actor/update/<int:pk>/', UpdateActorView.as_view(), name='update_actor'),
     path('movie/delete/<int:pk>/', DeleteMovieView.as_view(), name='delete_movie'),
-]
+    path('actor/delete/<int:pk>/', DeleteActorView.as_view(), name='delete_actor'),
+    path('director/create/', CreateDirectorView.as_view(), name='create_director'),
+    path('director/update/<int:pk>/', UpdateDirectorView.as_view(), name='update_director'),
+    path('director/delete/<int:pk>/', DeleteDirectorView.as_view(), name='delete_director'),
+)
