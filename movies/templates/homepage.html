@@ -1,7 +1,13 @@
-{% include "base.html" %}
+{% extends "base.html" %}
+
+{% block navbar %}
+    <a href="{% url 'movies' %}">Movies</a><br>
+    <a href="{% url 'books' %}">Books</a><br>
+{% endblock navbar %}
 
 {% block body %}
     <p>Number of movies - {{ number_of_movies }}</p>
     <p>Number of actors - {{ number_of_actors }}</p>
     <p>Number of directors - {{ number_of_directors }}</p>
+    <p>Number of books - {{ number_of_books }}</p>
 {% endblock body %}

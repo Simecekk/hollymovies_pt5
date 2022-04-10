@@ -1,0 +1,7 @@
+{% include "base_books.html" %}
+
+{% block body %}
+    {% for book in object_list %}
+        <p>{{ book.title }}</p>
+    {% endfor %}
+{% endblock body %}
