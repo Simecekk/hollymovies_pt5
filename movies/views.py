@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
 
 from movies.forms import ContactForm, MovieForm, ActorForm
 from movies.models import Movie, Actor, Director, Contact
@@ -203,3 +204,9 @@ class UpdateActorView(UpdateView):
     template_name = 'actor_update.html'
     form_class = ActorForm
     model = Actor
+
+
+class DeleteMovieView(DeleteView):
+    template_name = 'movie_confirm_delete.html'
+    model = Movie
+    success_url = reverse_lazy('movies')

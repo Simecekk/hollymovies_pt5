@@ -6,4 +6,6 @@
         {{ form.as_p }}
         <input type="submit" value="Update movie">
     </form>
+    <br><br>
+    <a href="{% url 'delete_movie' object.pk %}">Delete</a>
 {% endblock body %}
