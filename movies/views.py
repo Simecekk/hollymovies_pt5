@@ -197,3 +197,9 @@ class UpdateMovieView(UpdateView):
     template_name = 'movie_update.html'
     form_class = MovieForm
     model = Movie
+
+
+class UpdateActorView(UpdateView):
+    template_name = 'actor_update.html'
+    form_class = ActorForm
+    model = Actor
