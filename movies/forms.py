@@ -33,6 +33,7 @@ class ContactForm(forms.Form):
     phone_number = forms.IntegerField()
     age = forms.IntegerField(min_value=1, max_value=99)
     contact_at = DateFieldSevenDaysFromNow()
+    subscribe = forms.BooleanField()
 
     def clean_name(self):
         return self.data.get('name').lower()
@@ -54,3 +55,8 @@ class ActorForm(forms.ModelForm):
     class Meta:
         model = Actor
         fields = '__all__'
+
+    def save(self, commit=True):
+        actor = super(ActorForm, self).save(commit=commit)
+        actor.movies.add(*self.cleaned_data.get('movies'))
+        return actor

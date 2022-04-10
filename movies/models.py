@@ -24,7 +24,7 @@ class BasePersonModel(models.Model):
         abstract = True
 
     def get_absolute_url(self):
-        return resolve_url('actor_detail', pk=self.id)
+        return resolve_url('actor_detail', pk=self.pk)
 
 
 class Actor(BasePersonModel):

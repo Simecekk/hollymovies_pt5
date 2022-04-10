@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView
+from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView
 
 from movies.forms import ContactForm, MovieForm, ActorForm
 from movies.models import Movie, Actor, Director, Contact
@@ -71,11 +71,15 @@ class DirectorDetailView(HollyMoviesDetailView):
 class MovieListView(ListView):
     queryset = Movie.objects.all().order_by('-rating')
     template_name = 'movies.html'
-    extra_context = {
-        'best_movies': Movie.objects.filter(rating__gte=80).order_by('-rating'),
-        'worst_movies': Movie.objects.filter(rating__lte=20).order_by('rating'),
-        'page_name': 'Movies',
-    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(MovieListView, self).get_context_data(*args, **kwargs)
+        context.update({
+            'best_movies': Movie.objects.filter(rating__gte=80).order_by('-rating'),
+            'worst_movies': Movie.objects.filter(rating__lte=20).order_by('rating'),
+            'page_name': 'Movies',
+        })
+        return context
 
 
 class MovieDetailView(HollyMoviesDetailView):
@@ -128,14 +132,14 @@ class Jinja2TestingView(TemplateView):
 # class ContactView(View):
 #     def get(self, request, *args, **kwargs):
 #         context = {
-#             'contact_form': ContactForm()
+#             'form': ContactForm()
 #         }
 #         return TemplateResponse(request, 'contact.html', context=context)
 #
 #     def post(self, request, *args, **kwargs):
 #         bounded_form = ContactForm(request.POST)
 #         if not bounded_form.is_valid():
-#             return TemplateResponse(request, 'contact.html', context={'contact_form': bounded_form})
+#             return TemplateResponse(request, 'contact.html', context={'form': bounded_form})
 #
 #         name = bounded_form.cleaned_data.get('name')
 #         phone_number = bounded_form.cleaned_data.get('phone_number')
@@ -151,7 +155,7 @@ class Jinja2TestingView(TemplateView):
 #             contact_at=contact_at
 #         )
 #
-#         return TemplateResponse(request, 'contact.html', context={'contact_form': ContactForm()})
+#         return TemplateResponse(request, 'contact.html', context={'form': ContactForm()})
 
 class ContactView(FormView):
     template_name = 'contact.html'
@@ -187,3 +191,9 @@ class CreateActorView(CreateView):
     template_name = 'actor_create.html'
     form_class = ActorForm
     model = Actor
+
+
+class UpdateMovieView(UpdateView):
+    template_name = 'movie_update.html'
+    form_class = MovieForm
+    model = Movie
