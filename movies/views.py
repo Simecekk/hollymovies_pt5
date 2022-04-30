@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -235,3 +236,9 @@ class DeleteDirectorView(LoginRequiredMixin, DeleteView):
     template_name = 'director_confirm_delete.html'
     model = Director
     success_url = reverse_lazy('directors')
+
+
+class RegistrationView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
