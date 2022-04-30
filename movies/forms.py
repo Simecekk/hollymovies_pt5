@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
 
-from movies.models import Movie, Actor, Director
+from movies.models import Movie, Actor, Director, Profile
 
 
 class DatePickerDateInput(forms.DateInput):
@@ -68,3 +68,18 @@ class DirectorForm(forms.ModelForm):
     class Meta:
         model = Director
         fields = '__all__'
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        exclude = ('user', )
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        self.instance.user = self.request.user
+        return super(ProfileForm, self).save(commit=commit)

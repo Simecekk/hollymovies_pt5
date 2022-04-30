@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
-from movies.views import RegistrationView
+from movies.views import RegistrationView, ProfileCreateView, ProfileUpdateView
 
 urlpatterns = [
+    path('accounts/profile/create/', ProfileCreateView.as_view(), name='create_profile'),
+    path('accounts/profile/update/<int:pk>/', ProfileUpdateView.as_view(), name='update_profile'),
     path('accounts/register/', RegistrationView.as_view(), name='register'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/login/', LoginView.as_view(), name='login'),

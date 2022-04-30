@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.shortcuts import resolve_url
@@ -77,3 +78,15 @@ class Contact(models.Model):
     subject = models.TextField()
     phone_number = models.IntegerField()
     contact_at = models.DateField()
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
+    address = models.CharField(max_length=256, null=True, blank=True)
+    language = models.CharField(max_length=15, null=True, blank=True)
+    favorite_movie = models.ForeignKey(
+        Movie,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='profiles'
+    )

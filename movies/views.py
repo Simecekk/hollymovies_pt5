@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
-from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm
-from movies.models import Movie, Actor, Director, Contact
+from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm, ProfileForm
+from movies.models import Movie, Actor, Director, Contact, Profile
 from django.views import View
 
 
@@ -256,3 +256,30 @@ class RegistrationView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
+
+
+class ProfileCreateView(LoginRequiredMixin, CreateView):
+    form_class = ProfileForm
+    template_name = 'registration/profile_create.html'
+    success_url = reverse_lazy('homepage')
+
+    def get_form_kwargs(self):
+        kwargs = super(ProfileCreateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+
+class ProfileUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
+    form_class = ProfileForm
+    template_name = 'registration/profile_update.html'
+    success_url = reverse_lazy('homepage')
+    model = Profile
+
+    def get_form_kwargs(self):
+        kwargs = super(ProfileUpdateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def test_func(self):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return profile.user == self.request.user
