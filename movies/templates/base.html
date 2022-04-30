@@ -22,5 +22,15 @@
 {% block body %}
 {% endblock body %}
 
+{% block auth %}
+    <br>
+    <br>
+    <p>User: {{ request.user }}</p>
+    <p>Authenticated: {{ request.user.is_authenticated }}</p>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'logout' %}">Logout</a>
+    <br>
+    <br>
+{% endblock auth %}
 </body>
 </html>
