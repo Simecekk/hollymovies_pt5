@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm
 from movies.models import Movie, Actor, Director, Contact
@@ -32,13 +33,13 @@ class HomepageView(View):
 #         return HttpResponse(request, 'method not allowed')
 
 
-class ActorListView(ListView):
+class ActorListView(LoginRequiredMixin, ListView):
     model = Actor
     template_name = 'actors.html'
     extra_context = {'page_name': 'Actors'}
 
 
-class HollyMoviesDetailView(DetailView):
+class HollyMoviesDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(HollyMoviesDetailView, self).get_context_data(**kwargs)
         context.update({'page_name': self.object.name})
@@ -58,7 +59,7 @@ class ActorDetailView(HollyMoviesDetailView):
 #     return TemplateResponse(request, 'actors.html', context=context)
 
 
-class DirectorListView(ListView):
+class DirectorListView(LoginRequiredMixin, ListView):
     model = Director
     template_name = 'directors.html'
     extra_context = {'page_name': 'Directors'}
@@ -69,7 +70,7 @@ class DirectorDetailView(HollyMoviesDetailView):
     template_name = 'actor_detail.html'
 
 
-class MovieListView(ListView):
+class MovieListView(LoginRequiredMixin, ListView):
     queryset = Movie.objects.all().order_by('-rating')
     template_name = 'movies.html'
 
@@ -107,7 +108,7 @@ class MovieDetailView(HollyMoviesDetailView):
 #     return TemplateResponse(request, 'movies.html', context=context)
 
 
-class Jinja2TestingView(TemplateView):
+class Jinja2TestingView(LoginRequiredMixin, TemplateView):
     template_name = 'jinja2_testing.html'
     extra_context = {
         'testing_list': ['index_1', 'index_2', 'index_3'],
@@ -158,7 +159,7 @@ class Jinja2TestingView(TemplateView):
 #
 #         return TemplateResponse(request, 'contact.html', context={'form': ContactForm()})
 
-class ContactView(FormView):
+class ContactView(LoginRequiredMixin, FormView):
     template_name = 'contact.html'
     form_class = ContactForm
 
@@ -182,55 +183,55 @@ class ContactView(FormView):
         return TemplateResponse(self.request, 'contact.html', context={'form': form})
 
 
-class CreateMovieView(CreateView):
+class CreateMovieView(LoginRequiredMixin, CreateView):
     template_name = 'movie_create.html'
     form_class = MovieForm
     model = Movie
 
 
-class CreateActorView(CreateView):
+class CreateActorView(LoginRequiredMixin, CreateView):
     template_name = 'actor_create.html'
     form_class = ActorForm
     model = Actor
 
 
-class UpdateMovieView(UpdateView):
+class UpdateMovieView(LoginRequiredMixin, UpdateView):
     template_name = 'movie_update.html'
     form_class = MovieForm
     model = Movie
 
 
-class UpdateActorView(UpdateView):
+class UpdateActorView(LoginRequiredMixin, UpdateView):
     template_name = 'actor_update.html'
     form_class = ActorForm
     model = Actor
 
 
-class DeleteMovieView(DeleteView):
+class DeleteMovieView(LoginRequiredMixin, DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
 
 
-class DeleteActorView(DeleteView):
+class DeleteActorView(LoginRequiredMixin, DeleteView):
     template_name = 'actor_confirm_delete.html'
     model = Actor
     success_url = reverse_lazy('actors')
 
 
-class CreateDirectorView(CreateView):
+class CreateDirectorView(LoginRequiredMixin, CreateView):
     template_name = 'director_create.html'
     form_class = DirectorForm
     model = Director
 
 
-class UpdateDirectorView(UpdateView):
+class UpdateDirectorView(LoginRequiredMixin, UpdateView):
     template_name = 'director_update.html'
     form_class = DirectorForm
     model = Director
 
 
-class DeleteDirectorView(DeleteView):
+class DeleteDirectorView(LoginRequiredMixin, DeleteView):
     template_name = 'director_confirm_delete.html'
     model = Director
     success_url = reverse_lazy('directors')
