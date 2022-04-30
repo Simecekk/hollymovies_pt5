@@ -8,7 +8,11 @@
 
     <h4>Best movies ({{ best_movies.count }})</h4>
     {% for movie in best_movies %}
-        <p>{{ movie.name }} - rating ({{ movie.rating }}) - <a href="{% url 'movie_detail' movie.id %}">detail</a> - <a href="{% url 'update_movie' movie.id %}">update</a></p>
+        <p>{{ movie.name }} - rating ({{ movie.rating }}) - <a href="{% url 'movie_detail' movie.id %}">detail</a>
+            {% if perms.movies.change_movie %}
+                -
+                <a href="{% url 'update_movie' movie.id %}">update</a></p>
+            {% endif %}
     {% endfor %}<br>
 
     <h4>Worst movies ({{ worst_movies.count }})</h4>

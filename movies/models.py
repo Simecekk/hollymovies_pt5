@@ -65,6 +65,11 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return resolve_url('movie_detail', pk=self.id)
 
+    class Meta:
+        permissions = (
+            ('can_change_director', 'Can Change director'),
+        )
+
 
 class Contact(models.Model):
     name = models.CharField(max_length=256)

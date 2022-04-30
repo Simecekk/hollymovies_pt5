@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm
 from movies.models import Movie, Actor, Director, Contact
@@ -85,7 +85,7 @@ class MovieListView(LoginRequiredMixin, ListView):
         return context
 
 
-class MovieDetailView(HollyMoviesDetailView):
+class MovieDetailView(UserPassesTestMixin, HollyMoviesDetailView):
     model = Movie
     template_name = 'movie_detail.html'
 
@@ -94,6 +94,11 @@ class MovieDetailView(HollyMoviesDetailView):
         movie.likes += 1
         movie.save(update_fields=['likes', ])
         return redirect('movie_detail', pk=pk)
+
+    def test_func(self):
+        if self.request.user.username == 'honza':
+            return False
+        return True
 
 
 # def movies_view(request):
@@ -184,58 +189,67 @@ class ContactView(LoginRequiredMixin, FormView):
         return TemplateResponse(self.request, 'contact.html', context={'form': form})
 
 
-class CreateMovieView(LoginRequiredMixin, CreateView):
+class CreateMovieView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = 'movie_create.html'
     form_class = MovieForm
     model = Movie
+    permission_required = 'movies.add_movie'
 
 
-class CreateActorView(LoginRequiredMixin, CreateView):
+class CreateActorView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = 'actor_create.html'
     form_class = ActorForm
     model = Actor
+    permission_required = 'movies.add_actor'
 
 
-class UpdateMovieView(LoginRequiredMixin, UpdateView):
+class UpdateMovieView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = 'movie_update.html'
     form_class = MovieForm
     model = Movie
+    permission_required = 'movies.change_movie'
 
 
-class UpdateActorView(LoginRequiredMixin, UpdateView):
+class UpdateActorView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = 'actor_update.html'
     form_class = ActorForm
     model = Actor
+    permission_required = 'movies.change_actor'
 
 
-class DeleteMovieView(LoginRequiredMixin, DeleteView):
+class DeleteMovieView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
+    permission_required = 'movies.delete_movie'
 
 
-class DeleteActorView(LoginRequiredMixin, DeleteView):
+class DeleteActorView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     template_name = 'actor_confirm_delete.html'
     model = Actor
     success_url = reverse_lazy('actors')
+    permission_required = 'movies.delete_actor'
 
 
-class CreateDirectorView(LoginRequiredMixin, CreateView):
+class CreateDirectorView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = 'director_create.html'
     form_class = DirectorForm
     model = Director
+    permission_required = 'movies.add_director'
 
 
-class UpdateDirectorView(LoginRequiredMixin, UpdateView):
+class UpdateDirectorView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = 'director_update.html'
     form_class = DirectorForm
     model = Director
+    permission_required = 'movies.change_director'
 
 
-class DeleteDirectorView(LoginRequiredMixin, DeleteView):
+class DeleteDirectorView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     template_name = 'director_confirm_delete.html'
     model = Director
     success_url = reverse_lazy('directors')
+    permission_required = 'movies.delete_director'
 
 
 class RegistrationView(CreateView):
