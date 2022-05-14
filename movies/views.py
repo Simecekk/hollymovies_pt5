@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
-from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm, ProfileForm
+from movies.forms import ContactForm, MovieForm, ActorForm, DirectorForm, ProfileForm, SearchForm
 from movies.models import Movie, Actor, Director, Contact, Profile
 from django.views import View
 
@@ -77,10 +77,23 @@ class MovieListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(MovieListView, self).get_context_data(*args, **kwargs)
+
+        search_query = self.request.GET.get('query')
+        if search_query:
+            form = SearchForm(initial={'query': search_query})
+            best_movies = Movie.objects.filter(rating__gte=80, name__icontains=search_query).order_by('-rating')
+            worst_movies = Movie.objects.filter(rating__lte=20, name__icontains=search_query).order_by('rating')
+            context['object_list'] = context['object_list'].filter(name__icontains=search_query)
+        else:
+            form = SearchForm()
+            best_movies = Movie.objects.filter(rating__gte=80).order_by('-rating')
+            worst_movies = Movie.objects.filter(rating__lte=20).order_by('rating')
+
         context.update({
-            'best_movies': Movie.objects.filter(rating__gte=80).order_by('-rating'),
-            'worst_movies': Movie.objects.filter(rating__lte=20).order_by('rating'),
+            'best_movies': best_movies,
+            'worst_movies': worst_movies,
             'page_name': 'Movies',
+            'search_form': form,
         })
         return context
 

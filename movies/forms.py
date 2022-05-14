@@ -83,3 +83,8 @@ class ProfileForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.user = self.request.user
         return super(ProfileForm, self).save(commit=commit)
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
+

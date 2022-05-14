@@ -1,6 +1,11 @@
 {% include "base.html" %}
 
 {% block body %}
+    <form action="{% url "movies" %}" method="GET">
+        {{ search_form.query }}
+        <input type="submit" value="search">
+    </form>
+
     <h4>All movies ({{ object_list.count }})</h4>
     {% for movie in object_list %}
         <p>{{ movie.name }} - rating ({{ movie.rating }}) - <a href="{% url 'movie_detail' movie.id %}">detail</a> - <a href="{% url 'update_movie' movie.id %}">update</a></p>
