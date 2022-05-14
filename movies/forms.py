@@ -50,7 +50,7 @@ class MovieForm(forms.ModelForm):
 
 class ActorForm(forms.ModelForm):
     born_at = forms.DateField(widget=DatePickerDateInput())
-    movies = forms.ModelMultipleChoiceField(queryset=Movie.objects.all())
+    movies = forms.ModelMultipleChoiceField(queryset=Movie.objects.all(), required=False)
 
     class Meta:
         model = Actor
