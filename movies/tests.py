@@ -55,3 +55,10 @@ class TestViews(TestCase):
         response = self.client.post(create_actor_url, data=data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Actor.objects.filter(name=data['name']).exists())
+
+    def test_like_movie_success(self):
+        detail_movie_url = reverse('movie_detail', args=[self.movie.id, ])
+        response = self.client.post(detail_movie_url)
+        self.movie.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.movie.likes, 1)
